@@ -8,7 +8,7 @@
             <form method="POST">
                 {% csrf_token %}
                 <div class="form-group">
-                    <p>Are you sure you want to delete {{ email.email }} from {{ person }}?</p>
+                    <p>Are you sure you want to delete <b>{{ email.email }}</b> from <b>{{ person }}</b>?</p>
                     <button type="submit" class="btn btn-danger btn-lg">Yes</button>
                     <a href="{% url 'contact_detail' person.id %}"><button type="button" class="btn btn-secondary btn-lg">No</button></a>
                 </div>

@@ -10,7 +10,7 @@
             <div class="dropdown-menu dropdown-menu-right">
             <a class="dropdown-item" href="{% url 'email_create' contact.id %}">Email Address</a>
             <a class="dropdown-item" href="#">Phone Number</a>
-            <a class="dropdown-item" href="#">Address</a>
+            <a class="dropdown-item" href="{% url 'address_create' contact.id %}">Address</a>
             <a class="dropdown-item" href="#">Website</a>
             <a class="dropdown-item" href="#">Social Media</a>
             <a class="dropdown-item" href="#">Associated Contact</a>
@@ -138,6 +138,7 @@
                         <th>State</th>
                         <th>Postcode</th>
                         <th>Country</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -149,6 +150,10 @@
                         <td>{{ address.state }}</td>
                         <td>{{ address.postcode }}</td>
                         <td>{{ address.country.name }}</td>
+                        <td class="text-right">
+                            <a href="{% url 'address_update' contact.id address.id %}"><button type="button" class="btn btn-outline-primary btn-sm">Edit</button></a>
+                            <a href="{% url 'address_delete' contact.id address.id %}"><button type="button" class="btn btn-outline-danger btn-sm">Delete</button></a>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>

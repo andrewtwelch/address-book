@@ -68,6 +68,14 @@ class Address(models.Model):
 
     def __str__(self):
         return str(self.person) + " - " + self.type + " - " + self.street1
+    
+    @property
+    def get_readable_str(self):
+        text = self.street1
+        if (self.street2):
+            text += " " + self.street2
+        text += ", " + self.suburb + " " + self.state + " " + self.postcode + ", " + self.country.name
+        return text
 
 class Website(models.Model):
     WEBSITE_TYPE_CHOICES = [

@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from .models import (Person, Email, Phone, Address, Website, Note,
 AssociatedContact, SocialMedia, CustomField)
-from .forms import (AddressForm, EmailForm)
+from .forms import (AddressForm, EmailForm, WebsiteForm)
 # Create your views here.
 
 def contact_list(request):
@@ -102,3 +102,38 @@ def address_delete(request, person_uuid, address_uuid):
         url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
         return HttpResponseRedirect(url)
     return render(request, "app/address_delete.html", context)
+
+def website_create(request, person_uuid):
+    person = get_object_or_404(Person, id=person_uuid)
+    if request.method == 'POST':
+        form = WebsiteForm(request.POST)
+        website_object = form.save(commit=False)
+        website_object.person = person
+        website_object.save()
+        url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
+        return HttpResponseRedirect(url)
+    else:
+        form = WebsiteForm()
+        context = {'form': form, 'action': "Create"}
+        return render(request, 'app/website_edit.html', context)
+
+def website_update(request, person_uuid, website_uuid):
+    context = {'action': "Update"}
+    website = get_object_or_404(Website, id=website_uuid)
+    form = WebsiteForm(request.POST or None, instance=website)
+    if form.is_valid():
+        form.save()
+        url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
+        return HttpResponseRedirect(url)
+    context["form"] = form
+    return render(request, 'app/website_edit.html', context)
+
+def website_delete(request, person_uuid, website_uuid):
+    website = get_object_or_404(Website, id=website_uuid)
+    person = get_object_or_404(Person, id=person_uuid)
+    context = {"website": website, "person": person}
+    if request.method == "POST":
+        website.delete()
+        url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
+        return HttpResponseRedirect(url)
+    return render(request, "app/website_delete.html", context)

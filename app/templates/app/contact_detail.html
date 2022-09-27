@@ -11,7 +11,7 @@
             <a class="dropdown-item" href="{% url 'email_create' contact.id %}">Email Address</a>
             <a class="dropdown-item" href="#">Phone Number</a>
             <a class="dropdown-item" href="{% url 'address_create' contact.id %}">Address</a>
-            <a class="dropdown-item" href="#">Website</a>
+            <a class="dropdown-item" href="{% url 'website_create' contact.id %}">Website</a>
             <a class="dropdown-item" href="#">Social Media</a>
             <a class="dropdown-item" href="#">Associated Contact</a>
             <a class="dropdown-item" href="#">Custom Field</a>
@@ -177,6 +177,7 @@
                     <tr>
                         <th>Type</th>
                         <th>URL</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -184,6 +185,10 @@
                     <tr>
                         <td>{{ website.type }}</td>
                         <td><a href="{{ website.url }}">{{ website.url }}</a></td>
+                        <td class="text-right">
+                            <a href="{% url 'website_update' contact.id website.id %}"><button type="button" class="btn btn-outline-primary btn-sm">Edit</button></a>
+                            <a href="{% url 'website_delete' contact.id website.id %}"><button type="button" class="btn btn-outline-danger btn-sm">Delete</button></a>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>

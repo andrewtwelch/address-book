@@ -4,7 +4,7 @@ AssociatedContact, SocialMedia, CustomField)
 # Create your views here.
 
 def contact_list(request):
-    contacts = Person.objects.all()
+    contacts = Person.objects.order_by('last_name')
     return render(request, 'app/contact_list.html', {'contacts': contacts})
 
 def contact_detail(request, uuid):

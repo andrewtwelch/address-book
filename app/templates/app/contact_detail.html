@@ -1,0 +1,277 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row align-items-center">
+        <div class="col">
+            <h1>Contact Details</h1>
+            <table class="table table-borderless table-responsive">
+                <tbody>
+                    <tr>
+                        <th>First Name</th>
+                        <td>{{ contact.first_name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Last Name</th>
+                        <td>{{ contact.last_name }}</td>
+                    </tr>
+                    {% if contact.nickname %}
+                    <tr>
+                        <th>Nickname</th>
+                        <td>{{ contact.nickname }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if contact.company %}
+                    <tr>
+                        <th>Company</th>
+                        <td>{{ contact.company }}</td>
+                    </tr>
+                    {% endif %}
+                    {% if contact.birthday %}
+                    <tr>
+                        <th>Birthday</th>
+                        <td>{{ contact.birthday }}</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <br>
+    {% if emails %}
+    <div class="row align-items-center">
+        <div class="col">
+            <h3>Email Addresses</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Email Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for email in emails %}
+                    <tr>
+                        <td>{{ email.type }}</td>
+                        <td>{{ email.email }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="row align-items-center">
+        <div class="col">
+            <h5>No email addresses</h5>
+        </div>
+    </div>
+    {% endif %}
+    <br>
+    {% if phone_numbers %}
+    <div class="row align-items-center">
+        <div class="col">
+            <h3>Phone Numbers</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Phone Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for phone in phone_numbers %}
+                    <tr>
+                        <td>{{ phone.type }}</td>
+                        <td>{{ phone.number }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="row align-items-center">
+        <div class="col">
+            <h5>No phone numbers</h5>
+        </div>
+    </div>
+    {% endif %}
+    <br>
+    {% if addresses %}
+    <div class="row align-items-center">
+        <div class="col">
+            <h3>Addresses</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Street</th>
+                        <th>Suburb</th>
+                        <th>State</th>
+                        <th>Postcode</th>
+                        <th>Country</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for address in addresses %}
+                    <tr>
+                        <td>{{ address.type }}</td>
+                        <td>{{ address.street1 }}{% if address.street2 %}, {{ address.street2 }}{% endif %}</td>
+                        <td>{{ address.suburb }}</td>
+                        <td>{{ address.state }}</td>
+                        <td>{{ address.postcode }}</td>
+                        <td>{{ address.country.name }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="row align-items-center">
+        <div class="col">
+            <h5>No addresses</h5>
+        </div>
+    </div>
+    {% endif %}
+    <br>
+    {% if websites %}
+    <div class="row align-items-center">
+        <div class="col">
+            <h3>Websites</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>URL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for website in websites %}
+                    <tr>
+                        <td>{{ website.type }}</td>
+                        <td><a href="{{ website.url }}">{{ website.url }}</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="row align-items-center">
+        <div class="col">
+            <h5>No websites</h5>
+        </div>
+    </div>
+    {% endif %}
+    <br>
+    {% if social_media %}
+    <div class="row align-items-center">
+        <div class="col">
+            <h3>Social Media</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Username</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for social in social_media %}
+                    <tr>
+                        <td>{{ social.website_name }}</td>
+                        <td><a href="{{ social.url }}">{{ social.username }}</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="row align-items-center">
+        <div class="col">
+            <h5>No social media</h5>
+        </div>
+    </div>
+    {% endif %}
+    <br>
+    {% if associated_contacts %}
+    <div class="row align-items-center">
+        <div class="col">
+            <h3>Associated Contacts</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Contact</th>
+                        <th>Relation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for contact in associated_contacts %}
+                    <tr>
+                        <td><a href="{% url 'contact_detail' contact.associated_contact.id %}">{{ contact.associated_contact }}</a></td>
+                        <td>{{ contact.relation }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="row align-items-center">
+        <div class="col">
+            <h5>No associated contacts</h5>
+        </div>
+    </div>
+    {% endif %}
+    <br>
+    {% if custom_fields %}
+    <div class="row align-items-center">
+        <div class="col">
+            <h3>Custom Fields</h3>
+            <table class="table">
+                <tbody>
+                {% for field in custom_fields %}
+                    <tr>
+                        <td>{{ field.field_name }}</a></td>
+                        <td>{{ field.field_contents }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="row align-items-center">
+        <div class="col">
+            <h5>No custom fields</h5>
+        </div>
+    </div>
+    {% endif %}
+    <br>
+    {% if notes %}
+    <div class="row align-items-center">
+        <div class="col">
+            <h3>Notes</h3>
+            <table class="table">
+                <thead>
+                <tbody>
+                {% for note in notes %}
+                    <tr>
+                        <td>{{ note.note|linebreaks }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+    <div class="row align-items-center">
+        <div class="col">
+            <h5>No notes</h5>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

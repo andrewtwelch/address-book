@@ -14,11 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from .views import (address_create, address_delete, address_update, contact_list, contact_detail, email_create, email_update, email_delete, website_create, website_update, website_delete)
+from .views import (address_create, address_delete, address_update, contact_create, contact_update, contact_delete,
+contact_list, contact_detail, email_create, email_update, email_delete, phone_number_create, phone_number_update,
+phone_number_delete, social_media_create, social_media_delete, social_media_update, website_create, website_update,
+website_delete)
 
 urlpatterns = [
     path('', contact_list, name="contact_list"),
     path('contact/<uuid:person_uuid>/', contact_detail, name="contact_detail"),
+    path('contact/create/', contact_create, name="contact_create"),
+    path('contact/update/<uuid:person_uuid>/', contact_update, name="contact_update"),
+    path('contact/delete/<uuid:person_uuid>/', contact_delete, name="contact_delete"),
     path('contact/<uuid:person_uuid>/email/create/', email_create, name="email_create"),
     path('contact/<uuid:person_uuid>/email/update/<uuid:email_uuid>', email_update, name="email_update"),
     path('contact/<uuid:person_uuid>/email/delete/<uuid:email_uuid>', email_delete, name="email_delete"),
@@ -28,4 +34,10 @@ urlpatterns = [
     path('contact/<uuid:person_uuid>/website/create/', website_create, name="website_create"),
     path('contact/<uuid:person_uuid>/website/update/<uuid:website_uuid>', website_update, name="website_update"),
     path('contact/<uuid:person_uuid>/website/delete/<uuid:website_uuid>', website_delete, name="website_delete"),
+    path('contact/<uuid:person_uuid>/phone_number/create/', phone_number_create, name="phone_number_create"),
+    path('contact/<uuid:person_uuid>/phone_number/update/<uuid:phone_number_uuid>', phone_number_update, name="phone_number_update"),
+    path('contact/<uuid:person_uuid>/phone_number/delete/<uuid:phone_number_uuid>', phone_number_delete, name="phone_number_delete"),
+    path('contact/<uuid:person_uuid>/social_media/create/', social_media_create, name="social_media_create"),
+    path('contact/<uuid:person_uuid>/social_media/update/<uuid:social_media_uuid>', social_media_update, name="social_media_update"),
+    path('contact/<uuid:person_uuid>/social_media/delete/<uuid:social_media_uuid>', social_media_delete, name="social_media_delete"),
 ]

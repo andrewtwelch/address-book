@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block navbar %}
+<a class="nav-link ml-auto text-secondary" href="{% url 'contact_create' %}">Add Contact</a>
+{% endblock %}
+
 {% block content %}
 <div class="container">
     <div class="row align-items-center">
@@ -11,6 +15,7 @@
                             <th scope="col">First Name</th>
                             <th scope="col">Last Name</th>
                             <th scope="col">Company</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -23,6 +28,10 @@
                                 {% else %}
                                 <td>None</td>
                                 {% endif %}
+                                <td class="text-right">
+                                    <a href="{% url 'contact_update' contact.id %}"><button type="button" class="btn btn-outline-primary btn-sm">Edit</button></a>
+                                    <a href="{% url 'contact_delete' contact.id %}"><button type="button" class="btn btn-outline-danger btn-sm">Delete</button></a>
+                                </td>
                             </tr>
                         {% endfor %}
                     </tbody>

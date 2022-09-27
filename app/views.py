@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from .models import (Person, Email, Phone, Address, Website, Note,
 AssociatedContact, SocialMedia, CustomField)
-from .forms import (AddressForm, EmailForm, WebsiteForm)
+from .forms import (AddressForm, EmailForm, PhoneForm, PersonForm, SocialMediaForm, WebsiteForm)
 # Create your views here.
 
 def contact_list(request):
@@ -32,6 +32,38 @@ def contact_detail(request, person_uuid):
         'custom_fields': custom_fields,
     }
     return render(request, 'app/contact_detail.html', context)
+
+def contact_create(request):
+    if request.method == 'POST':
+        form = PersonForm(request.POST)
+        person_object = form.save(commit=False)
+        person_object.save()
+        url = reverse('contact_detail', kwargs={'person_uuid': person_object.id})
+        return HttpResponseRedirect(url)
+    else:
+        form = PersonForm()
+        context = {'form': form, 'action': "Create"}
+        return render(request, 'app/contact_edit.html', context)
+
+def contact_update(request, person_uuid):
+    context = {'action': "Update"}
+    person = get_object_or_404(Person, id=person_uuid)
+    form = PersonForm(request.POST or None, instance=person)
+    if form.is_valid():
+        form.save()
+        url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
+        return HttpResponseRedirect(url)
+    context["form"] = form
+    return render(request, 'app/contact_edit.html', context)
+
+def contact_delete(request, person_uuid):
+    person = get_object_or_404(Person, id=person_uuid)
+    context = {"person": person}
+    if request.method == "POST":
+        person.delete()
+        url = reverse('contact_list')
+        return HttpResponseRedirect(url)
+    return render(request, "app/contact_delete.html", context)
 
 def email_create(request, person_uuid):
     person = get_object_or_404(Person, id=person_uuid)
@@ -137,3 +169,73 @@ def website_delete(request, person_uuid, website_uuid):
         url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
         return HttpResponseRedirect(url)
     return render(request, "app/website_delete.html", context)
+
+def phone_number_create(request, person_uuid):
+    person = get_object_or_404(Person, id=person_uuid)
+    if request.method == 'POST':
+        form = PhoneForm(request.POST)
+        phone_object = form.save(commit=False)
+        phone_object.person = person
+        phone_object.save()
+        url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
+        return HttpResponseRedirect(url)
+    else:
+        form = PhoneForm()
+        context = {'form': form, 'action': "Create"}
+        return render(request, 'app/phone_edit.html', context)
+
+def phone_number_update(request, person_uuid, phone_number_uuid):
+    context = {'action': "Update"}
+    phone = get_object_or_404(Phone, id=phone_number_uuid)
+    form = PhoneForm(request.POST or None, instance=phone)
+    if form.is_valid():
+        form.save()
+        url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
+        return HttpResponseRedirect(url)
+    context["form"] = form
+    return render(request, 'app/phone_edit.html', context)
+
+def phone_number_delete(request, person_uuid, phone_number_uuid):
+    phone = get_object_or_404(Phone, id=phone_number_uuid)
+    person = get_object_or_404(Person, id=person_uuid)
+    context = {"phone": phone, "person": person}
+    if request.method == "POST":
+        phone.delete()
+        url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
+        return HttpResponseRedirect(url)
+    return render(request, "app/phone_delete.html", context)
+
+def social_media_create(request, person_uuid):
+    person = get_object_or_404(Person, id=person_uuid)
+    if request.method == 'POST':
+        form = SocialMediaForm(request.POST)
+        social_media_object = form.save(commit=False)
+        social_media_object.person = person
+        social_media_object.save()
+        url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
+        return HttpResponseRedirect(url)
+    else:
+        form = SocialMediaForm()
+        context = {'form': form, 'action': "Create"}
+        return render(request, 'app/social_media_edit.html', context)
+
+def social_media_update(request, person_uuid, social_media_uuid):
+    context = {'action': "Update"}
+    social_media = get_object_or_404(SocialMedia, id=social_media_uuid)
+    form = SocialMediaForm(request.POST or None, instance=social_media)
+    if form.is_valid():
+        form.save()
+        url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
+        return HttpResponseRedirect(url)
+    context["form"] = form
+    return render(request, 'app/social_media_edit.html', context)
+
+def social_media_delete(request, person_uuid, social_media_uuid):
+    social_media = get_object_or_404(SocialMedia, id=social_media_uuid)
+    person = get_object_or_404(Person, id=person_uuid)
+    context = {"social_media": social_media, "person": person}
+    if request.method == "POST":
+        social_media.delete()
+        url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
+        return HttpResponseRedirect(url)
+    return render(request, "app/social_media_delete.html", context)

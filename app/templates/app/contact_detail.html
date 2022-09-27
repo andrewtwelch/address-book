@@ -9,10 +9,10 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right">
             <a class="dropdown-item" href="{% url 'email_create' contact.id %}">Email Address</a>
-            <a class="dropdown-item" href="#">Phone Number</a>
+            <a class="dropdown-item" href="{% url 'phone_number_create' contact.id %}">Phone Number</a>
             <a class="dropdown-item" href="{% url 'address_create' contact.id %}">Address</a>
             <a class="dropdown-item" href="{% url 'website_create' contact.id %}">Website</a>
-            <a class="dropdown-item" href="#">Social Media</a>
+            <a class="dropdown-item" href="{% url 'social_media_create' contact.id %}">Social Media</a>
             <a class="dropdown-item" href="#">Associated Contact</a>
             <a class="dropdown-item" href="#">Custom Field</a>
             <a class="dropdown-item" href="#">Note</a>
@@ -87,12 +87,6 @@
             </table>
         </div>
     </div>
-    {% else %}
-    <div class="row align-items-center">
-        <div class="col">
-            <h5>No email addresses</h5>
-        </div>
-    </div>
     {% endif %}
     <br>
     {% if phone_numbers %}
@@ -104,6 +98,7 @@
                     <tr>
                         <th>Type</th>
                         <th>Phone Number</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -111,16 +106,14 @@
                     <tr>
                         <td>{{ phone.type }}</td>
                         <td>{{ phone.number }}</td>
+                        <td class="text-right">
+                            <a href="{% url 'phone_number_update' contact.id phone.id %}"><button type="button" class="btn btn-outline-primary btn-sm">Edit</button></a>
+                            <a href="{% url 'phone_number_delete' contact.id phone.id %}"><button type="button" class="btn btn-outline-danger btn-sm">Delete</button></a>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
-        </div>
-    </div>
-    {% else %}
-    <div class="row align-items-center">
-        <div class="col">
-            <h5>No phone numbers</h5>
         </div>
     </div>
     {% endif %}
@@ -160,12 +153,6 @@
             </table>
         </div>
     </div>
-    {% else %}
-    <div class="row align-items-center">
-        <div class="col">
-            <h5>No addresses</h5>
-        </div>
-    </div>
     {% endif %}
     <br>
     {% if websites %}
@@ -195,12 +182,6 @@
             </table>
         </div>
     </div>
-    {% else %}
-    <div class="row align-items-center">
-        <div class="col">
-            <h5>No websites</h5>
-        </div>
-    </div>
     {% endif %}
     <br>
     {% if social_media %}
@@ -212,6 +193,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Username</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -219,16 +201,14 @@
                     <tr>
                         <td>{{ social.website_name }}</td>
                         <td><a href="{{ social.url }}">{{ social.username }}</a></td>
+                        <td class="text-right">
+                            <a href="{% url 'social_media_update' contact.id social.id %}"><button type="button" class="btn btn-outline-primary btn-sm">Edit</button></a>
+                            <a href="{% url 'social_media_delete' contact.id social.id %}"><button type="button" class="btn btn-outline-danger btn-sm">Delete</button></a>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
-        </div>
-    </div>
-    {% else %}
-    <div class="row align-items-center">
-        <div class="col">
-            <h5>No social media</h5>
         </div>
     </div>
     {% endif %}
@@ -255,12 +235,6 @@
             </table>
         </div>
     </div>
-    {% else %}
-    <div class="row align-items-center">
-        <div class="col">
-            <h5>No associated contacts</h5>
-        </div>
-    </div>
     {% endif %}
     <br>
     {% if custom_fields %}
@@ -279,12 +253,6 @@
             </table>
         </div>
     </div>
-    {% else %}
-    <div class="row align-items-center">
-        <div class="col">
-            <h5>No custom fields</h5>
-        </div>
-    </div>
     {% endif %}
     <br>
     {% if notes %}
@@ -301,12 +269,6 @@
                 {% endfor %}
                 </tbody>
             </table>
-        </div>
-    </div>
-    {% else %}
-    <div class="row align-items-center">
-        <div class="col">
-            <h5>No notes</h5>
         </div>
     </div>
     {% endif %}

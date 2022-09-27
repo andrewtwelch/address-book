@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from .models import (Person, Email, Phone, Address, Website, Note,
 AssociatedContact, SocialMedia, CustomField)
-from .forms import (AddressForm, EmailForm, PhoneForm, PersonForm, SocialMediaForm, WebsiteForm)
+from .forms import (AddressForm, AssociatedContactForm, EmailForm, PhoneForm, PersonForm, SocialMediaForm, WebsiteForm)
 # Create your views here.
 
 def contact_list(request):
@@ -239,3 +239,38 @@ def social_media_delete(request, person_uuid, social_media_uuid):
         url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
         return HttpResponseRedirect(url)
     return render(request, "app/social_media_delete.html", context)
+
+def associated_contact_create(request, person_uuid):
+    person = get_object_or_404(Person, id=person_uuid)
+    if request.method == 'POST':
+        form = AssociatedContactForm(request.POST)
+        associated_contact_object = form.save(commit=False)
+        associated_contact_object.person = person
+        associated_contact_object.save()
+        url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
+        return HttpResponseRedirect(url)
+    else:
+        form = AssociatedContactForm()
+        context = {'form': form, 'action': "Create"}
+        return render(request, 'app/associated_contact_edit.html', context)
+
+def associated_contact_update(request, person_uuid, associated_contact_uuid):
+    context = {'action': "Update"}
+    associated_contact = get_object_or_404(AssociatedContact, id=associated_contact_uuid)
+    form = AssociatedContactForm(request.POST or None, instance=associated_contact)
+    if form.is_valid():
+        form.save()
+        url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
+        return HttpResponseRedirect(url)
+    context["form"] = form
+    return render(request, 'app/associated_contact_edit.html', context)
+
+def associated_contact_delete(request, person_uuid, associated_contact_uuid):
+    associated_contact = get_object_or_404(AssociatedContact, id=associated_contact_uuid)
+    person = get_object_or_404(Person, id=person_uuid)
+    context = {"associated_contact": associated_contact, "person": person}
+    if request.method == "POST":
+        associated_contact.delete()
+        url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
+        return HttpResponseRedirect(url)
+    return render(request, "app/associated_contact_delete.html", context)

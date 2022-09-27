@@ -1,5 +1,5 @@
 from django import forms
-from .models import (Address, Person, Phone, Email, SocialMedia, Website)
+from .models import (Address, AssociatedContact, Person, Phone, Email, SocialMedia, Website)
 
 class EmailForm(forms.ModelForm):
     class Meta:
@@ -34,5 +34,11 @@ class PhoneForm(forms.ModelForm):
 class SocialMediaForm(forms.ModelForm):
     class Meta:
         model = SocialMedia
+        fields = '__all__'
+        exclude = ('id', 'person')
+
+class AssociatedContactForm(forms.ModelForm):
+    class Meta:
+        model = AssociatedContact
         fields = '__all__'
         exclude = ('id', 'person')

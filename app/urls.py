@@ -14,10 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from .views import (address_create, address_delete, address_update, contact_create, contact_update, contact_delete,
-contact_list, contact_detail, email_create, email_update, email_delete, phone_number_create, phone_number_update,
-phone_number_delete, social_media_create, social_media_delete, social_media_update, website_create, website_update,
-website_delete)
+from .views import (address_create, address_delete, address_update, associated_contact_create, associated_contact_delete,
+associated_contact_update, contact_create, contact_update, contact_delete, contact_list, contact_detail, email_create,
+email_update, email_delete, phone_number_create, phone_number_update, phone_number_delete, social_media_create,
+social_media_delete, social_media_update, website_create, website_update, website_delete)
 
 urlpatterns = [
     path('', contact_list, name="contact_list"),
@@ -40,4 +40,7 @@ urlpatterns = [
     path('contact/<uuid:person_uuid>/social_media/create/', social_media_create, name="social_media_create"),
     path('contact/<uuid:person_uuid>/social_media/update/<uuid:social_media_uuid>', social_media_update, name="social_media_update"),
     path('contact/<uuid:person_uuid>/social_media/delete/<uuid:social_media_uuid>', social_media_delete, name="social_media_delete"),
+    path('contact/<uuid:person_uuid>/associated_contact/create/', associated_contact_create, name="associated_contact_create"),
+    path('contact/<uuid:person_uuid>/associated_contact/update/<uuid:associated_contact_uuid>', associated_contact_update, name="associated_contact_update"),
+    path('contact/<uuid:person_uuid>/associated_contact/delete/<uuid:associated_contact_uuid>', associated_contact_delete, name="associated_contact_delete"),
 ]

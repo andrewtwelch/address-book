@@ -13,7 +13,7 @@
             <a class="dropdown-item" href="{% url 'address_create' contact.id %}">Address</a>
             <a class="dropdown-item" href="{% url 'website_create' contact.id %}">Website</a>
             <a class="dropdown-item" href="{% url 'social_media_create' contact.id %}">Social Media</a>
-            <a class="dropdown-item" href="#">Associated Contact</a>
+            <a class="dropdown-item" href="{% url 'associated_contact_create' contact.id %}">Associated Contact</a>
             <a class="dropdown-item" href="#">Custom Field</a>
             <a class="dropdown-item" href="#">Note</a>
             </div>
@@ -222,13 +222,18 @@
                     <tr>
                         <th>Contact</th>
                         <th>Relation</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                {% for contact in associated_contacts %}
+                {% for associated_contact_object in associated_contacts %}
                     <tr>
-                        <td><a href="{% url 'contact_detail' contact.associated_contact.id %}">{{ contact.associated_contact }}</a></td>
-                        <td>{{ contact.relation }}</td>
+                        <td><a href="{% url 'contact_detail' associated_contact_object.associated_contact.id %}">{{ associated_contact_object.associated_contact }}</a></td>
+                        <td>{{ associated_contact_object.relation }}</td>
+                        <td class="text-right">
+                            <a href="{% url 'associated_contact_update' contact.id associated_contact_object.id %}"><button type="button" class="btn btn-outline-primary btn-sm">Edit</button></a>
+                            <a href="{% url 'associated_contact_delete' contact.id associated_contact_object.id %}"><button type="button" class="btn btn-outline-danger btn-sm">Delete</button></a>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>

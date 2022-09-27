@@ -1,5 +1,27 @@
 {% extends "base.html" %}
 
+{% block navbar %}
+<div class="navbar-collapse " id="navbarNavDropdown">
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown">
+            Add to Contact
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="{% url 'email_create' contact.id %}">Email Address</a>
+            <a class="dropdown-item" href="#">Phone Number</a>
+            <a class="dropdown-item" href="#">Address</a>
+            <a class="dropdown-item" href="#">Website</a>
+            <a class="dropdown-item" href="#">Social Media</a>
+            <a class="dropdown-item" href="#">Associated Contact</a>
+            <a class="dropdown-item" href="#">Custom Field</a>
+            <a class="dropdown-item" href="#">Note</a>
+            </div>
+        </li>
+    </ul>
+</div>
+{% endblock %}
+
 {% block content %}
 <div class="container">
     <div class="row align-items-center">
@@ -47,13 +69,18 @@
                     <tr>
                         <th>Type</th>
                         <th>Email Address</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for email in emails %}
                     <tr>
                         <td>{{ email.type }}</td>
-                        <td>{{ email.email }}</td>
+                        <td><a href="mailto:{{ email.email }}">{{ email.email }}</a></td>
+                        <td class="text-right">
+                            <a href="{% url 'email_update' contact.id email.id %}"><button type="button" class="btn btn-outline-primary btn-sm">Edit</button></a>
+                            <a href="{% url 'email_delete' contact.id email.id %}"><button type="button" class="btn btn-outline-danger btn-sm">Delete</button></a>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>

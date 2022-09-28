@@ -17,7 +17,8 @@ from django.urls import path
 from .views import (address_create, address_delete, address_update, associated_contact_create, associated_contact_delete,
 associated_contact_update, contact_create, contact_update, contact_delete, contact_list, contact_detail, email_create,
 email_update, email_delete, phone_number_create, phone_number_update, phone_number_delete, social_media_create,
-social_media_delete, social_media_update, website_create, website_update, website_delete)
+social_media_delete, social_media_update, website_create, website_update, website_delete, custom_field_create,
+custom_field_update, custom_field_delete, note_create, note_update, note_delete)
 
 urlpatterns = [
     path('', contact_list, name="contact_list"),
@@ -43,4 +44,10 @@ urlpatterns = [
     path('contact/<uuid:person_uuid>/associated_contact/create/', associated_contact_create, name="associated_contact_create"),
     path('contact/<uuid:person_uuid>/associated_contact/update/<uuid:associated_contact_uuid>', associated_contact_update, name="associated_contact_update"),
     path('contact/<uuid:person_uuid>/associated_contact/delete/<uuid:associated_contact_uuid>', associated_contact_delete, name="associated_contact_delete"),
+    path('contact/<uuid:person_uuid>/custom_field/create/', custom_field_create, name="custom_field_create"),
+    path('contact/<uuid:person_uuid>/custom_field/update/<uuid:custom_field_uuid>', custom_field_update, name="custom_field_update"),
+    path('contact/<uuid:person_uuid>/custom_field/delete/<uuid:custom_field_uuid>', custom_field_delete, name="custom_field_delete"),
+    path('contact/<uuid:person_uuid>/note/create/', note_create, name="note_create"),
+    path('contact/<uuid:person_uuid>/note/update/<uuid:note_uuid>', note_update, name="note_update"),
+    path('contact/<uuid:person_uuid>/note/delete/<uuid:note_uuid>', note_delete, name="note_delete"),
 ]

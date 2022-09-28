@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from .models import (Person, Email, Phone, Address, Website, Note,
 AssociatedContact, SocialMedia, CustomField)
-from .forms import (AddressForm, AssociatedContactForm, EmailForm, PhoneForm, PersonForm, SocialMediaForm, WebsiteForm)
+from .forms import (AddressForm, AssociatedContactForm, CustomFieldForm, EmailForm, NoteForm, PhoneForm, PersonForm, SocialMediaForm, WebsiteForm)
 # Create your views here.
 
 def contact_list(request):
@@ -274,3 +274,73 @@ def associated_contact_delete(request, person_uuid, associated_contact_uuid):
         url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
         return HttpResponseRedirect(url)
     return render(request, "app/associated_contact_delete.html", context)
+
+def custom_field_create(request, person_uuid):
+    person = get_object_or_404(Person, id=person_uuid)
+    if request.method == 'POST':
+        form = CustomFieldForm(request.POST)
+        custom_field_object = form.save(commit=False)
+        custom_field_object.person = person
+        custom_field_object.save()
+        url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
+        return HttpResponseRedirect(url)
+    else:
+        form = CustomFieldForm()
+        context = {'form': form, 'action': "Create"}
+        return render(request, 'app/custom_field_edit.html', context)
+
+def custom_field_update(request, person_uuid, custom_field_uuid):
+    context = {'action': "Update"}
+    custom_field = get_object_or_404(CustomField, id=custom_field_uuid)
+    form = CustomFieldForm(request.POST or None, instance=custom_field)
+    if form.is_valid():
+        form.save()
+        url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
+        return HttpResponseRedirect(url)
+    context["form"] = form
+    return render(request, 'app/custom_field_edit.html', context)
+
+def custom_field_delete(request, person_uuid, custom_field_uuid):
+    custom_field = get_object_or_404(CustomField, id=custom_field_uuid)
+    person = get_object_or_404(Person, id=person_uuid)
+    context = {"custom_field": custom_field, "person": person}
+    if request.method == "POST":
+        custom_field.delete()
+        url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
+        return HttpResponseRedirect(url)
+    return render(request, "app/custom_field_delete.html", context)
+
+def note_create(request, person_uuid):
+    person = get_object_or_404(Person, id=person_uuid)
+    if request.method == 'POST':
+        form = NoteForm(request.POST)
+        note_object = form.save(commit=False)
+        note_object.person = person
+        note_object.save()
+        url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
+        return HttpResponseRedirect(url)
+    else:
+        form = NoteForm()
+        context = {'form': form, 'action': "Create"}
+        return render(request, 'app/note_edit.html', context)
+
+def note_update(request, person_uuid, note_uuid):
+    context = {'action': "Update"}
+    note = get_object_or_404(Note, id=note_uuid)
+    form = NoteForm(request.POST or None, instance=note)
+    if form.is_valid():
+        form.save()
+        url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
+        return HttpResponseRedirect(url)
+    context["form"] = form
+    return render(request, 'app/note_edit.html', context)
+
+def note_delete(request, person_uuid, note_uuid):
+    note = get_object_or_404(Note, id=note_uuid)
+    person = get_object_or_404(Person, id=person_uuid)
+    context = {"note": note, "person": person}
+    if request.method == "POST":
+        note.delete()
+        url = reverse('contact_detail', kwargs={'person_uuid': person_uuid})
+        return HttpResponseRedirect(url)
+    return render(request, "app/note_delete.html", context)

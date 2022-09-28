@@ -14,8 +14,8 @@
             <a class="dropdown-item" href="{% url 'website_create' contact.id %}">Website</a>
             <a class="dropdown-item" href="{% url 'social_media_create' contact.id %}">Social Media</a>
             <a class="dropdown-item" href="{% url 'associated_contact_create' contact.id %}">Associated Contact</a>
-            <a class="dropdown-item" href="#">Custom Field</a>
-            <a class="dropdown-item" href="#">Note</a>
+            <a class="dropdown-item" href="{% url 'custom_field_create' contact.id %}">Custom Field</a>
+            <a class="dropdown-item" href="{% url 'note_create' contact.id %}">Note</a>
             </div>
         </li>
     </ul>
@@ -252,6 +252,10 @@
                     <tr>
                         <td>{{ field.field_name }}</a></td>
                         <td>{{ field.field_contents }}</td>
+                        <td class="text-right">
+                            <a href="{% url 'custom_field_update' contact.id field.id %}"><button type="button" class="btn btn-outline-primary btn-sm">Edit</button></a>
+                            <a href="{% url 'custom_field_delete' contact.id field.id %}"><button type="button" class="btn btn-outline-danger btn-sm">Delete</button></a>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -270,6 +274,10 @@
                 {% for note in notes %}
                     <tr>
                         <td>{{ note.note|linebreaks }}</td>
+                        <td class="text-right">
+                            <a href="{% url 'note_update' contact.id note.id %}"><button type="button" class="btn btn-outline-primary btn-sm">Edit</button></a>
+                            <a href="{% url 'note_delete' contact.id note.id %}"><button type="button" class="btn btn-outline-danger btn-sm">Delete</button></a>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
